@@ -1,8 +1,6 @@
 # Класс Station (Станция)
 class Station
-  # Может возвращать список всех поездов, находящихся в текущий момент на станции
-  attr_reader :trains
-  attr_reader :name
+  attr_reader :trains, :name
 
   # Имеет название, которое указывается при ее создании
   def initialize(name)
@@ -29,6 +27,8 @@ class Station
     when :cargo then @trains[:cargo] << train
     when :passenger then @trains[:passenger] << train
     end
+
+    puts "Train #{train.number} arrived at #{name}"
   end
 
   # Может отправлять поезда (по одному за раз - при этом поезд удаляется из списка поездов, находящихся на станции).

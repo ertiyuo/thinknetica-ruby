@@ -1,12 +1,6 @@
 # Класс Train (Поезд):
 class Train
-  attr_reader :type
-  # Может возвращать текущую скорость
-  attr_reader :speed
-  # Может возвращать количество вагонов
-  attr_reader :carriages
-  # Может возвращать текущую станцию на основе маршрута
-  attr_reader :current_station
+  attr_reader :number, :type, :speed, :carriages, :current_station
 
   # Имеет номер (произвольная строка), тип (грузовой, пассажирский) и количество вагонов, эти данные указываются при создании экземпляра класса
   def initialize(number, type, carriages)
