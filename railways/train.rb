@@ -1,11 +1,11 @@
 class Train
   attr_reader :number, :type, :carriages, :current_station
 
-  def initialize(number, type, carriages)
+  def initialize(number, type)
     @number = number
     @type = type
-    @carriages = carriages
 
+    @carriages = []
     @speed = 0
   end
 
@@ -17,16 +17,18 @@ class Train
     @speed = 0
   end
 
-  def add_carriage
-    return "Stop first" if is_moving?
-
-    @carriages += 1
+  def add_carriage(carriage)
+    if can_add_carriage? carriage
+      carriages << carriage
+      puts "Carriage added to #{type} train #{number}. Carriages count: #{carriages.count}"
+    end
   end
 
   def remove_carriage
-    return "Stop first" if is_moving?
-
-    @carriages -= 1
+    if can_change_carriages?
+      carriages.pop
+      puts "Carriage removed from train #{number}. Carriages count: #{carriages.count}"
+    end
   end
 
   def follow_route(route)
@@ -54,7 +56,7 @@ class Train
   # используется только объектом класса и потомками
   attr_reader :route
 
-  # используется только объектом класса
+  # используется только объектом класса и потомками
   def previous_station
     next_index = route.stations.index(current_station) - 1
 
@@ -78,5 +80,23 @@ class Train
   # используется только объектом класса и потомками
   def is_moving?
     !@speed.zero?
+  end
+
+  def can_add_carriage?(carriage)
+    if carriage.type != type
+      puts "Wrong carriage!"
+      return false
+    end
+
+    can_change_carriages?
+  end
+
+  def can_change_carriages?
+    if is_moving?
+      puts "Can not remove carriage while moving"
+      return false
+    end
+
+    true
   end
 end
