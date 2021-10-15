@@ -18,17 +18,17 @@ class Train
   end
 
   def add_carriage(carriage)
-    if can_add_carriage? carriage
-      carriages << carriage
-      puts "Carriage added to #{type} train #{number}. Carriages count: #{carriages.count}"
-    end
+    return unless can_add_carriage? carriage
+
+    puts "Carriage added to #{type} train #{number}. Carriages count: #{carriages.count}"
+    carriages << carriage
   end
 
   def remove_carriage
-    if can_change_carriages?
-      carriages.pop
-      puts "Carriage removed from train #{number}. Carriages count: #{carriages.count}"
-    end
+    return unless can_change_carriages?
+
+    carriages.pop
+    puts "Carriage removed from train #{number}. Carriages count: #{carriages.count}"
   end
 
   def follow_route(route)
@@ -42,10 +42,10 @@ class Train
       if next_station
         arrive_to next_station
       else
-        puts "It is the end!"
+        puts 'It is the end!'
       end
     else
-      puts "At what speed?"
+      puts 'At what speed?'
     end
   end
 
@@ -54,22 +54,22 @@ class Train
       if previous_station
         arrive_to previous_station
       else
-        puts "It is the beginning!"
+        puts 'It is the beginning!'
       end
     else
-      puts "At what speed?"
+      puts 'At what speed?'
     end
   end
 
-  def go(direction)
+  def go(_direction)
     if is_moving?
       if next_station
         arrive_to next_station
       else
-        puts "It is the end!"
+        puts 'It is the end!'
       end
     else
-      puts "At what speed?"
+      puts 'At what speed?'
     end
   end
 
@@ -106,7 +106,7 @@ class Train
 
   def can_add_carriage?(carriage)
     if carriage.type != type
-      puts "Wrong carriage!"
+      puts 'Wrong carriage!'
       return false
     end
 
@@ -115,7 +115,7 @@ class Train
 
   def can_change_carriages?
     if is_moving?
-      puts "Can not remove carriage while moving"
+      puts 'Can not remove carriage while moving'
       return false
     end
 

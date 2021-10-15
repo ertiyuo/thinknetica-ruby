@@ -1,34 +1,26 @@
+# frozen_string_literal: false
+
 Dir["#{File.dirname(__FILE__)}/lib/**/*.rb"].each { |f| load(f) }
 
-ACTIONS = {
-    create_station: 'create station',
-    print_stations: 'print stations',
-    print_trains: 'print trains on station',
+available_actions = Railways::ACTIONS.merge({ exit: 'exit' })
 
-    create_route: 'create route',
-    add_station: 'add station to route',
-    remove_station: 'remove station from route',
+print "Welcome to the railways. You can:\n"
+available_actions.each { |_key, action| puts "- #{action}" }
+print "\nWhat do you want to do? "
 
-    create_train: 'create train',
-    add_carriage: 'add carriage to train',
-    remove_carriage: 'remove carriage from train',
-    set_route: 'set route for train',
-    move_forward: 'move train forward',
-    move_back: 'move train back'
-  }
-EXIT_ACTION = 'q'
+railways = Railways.new
 
-print "Welcome to the railways. What do you want to do?\n\n"
-ACTIONS.each {|key, action| puts "- #{action}"}
-
-print "\nType command or q to exit: "
-action = gets.chomp
-
-until ACTIONS.has_value?(action) || action == EXIT_ACTION
-  print "Wrong command, try again: "
+loop do
   action = gets.chomp
+
+  if available_actions.value?(action)
+    break if action == available_actions[:exit]
+
+    railways.send available_actions.key action
+    print 'What next? '
+  else
+    print 'Wrong command, try again: '
+  end
 end
 
-return if action == EXIT_ACTION
-
-send ACTIONS.key action
+puts "\nResult is #{railways.inspect}"
