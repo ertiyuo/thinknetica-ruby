@@ -38,17 +38,39 @@ class Train
   end
 
   def go_forward
-    return "At what speed?" if !is_moving?
-    return "It is the end!" if !next_station
-
-    arrive_to self.next_station
+    if is_moving?
+      if next_station
+        arrive_to next_station
+      else
+        puts "It is the end!"
+      end
+    else
+      puts "At what speed?"
+    end
   end
 
   def go_back
-    return "At what speed?" if !is_moving?
-    return "It is the beginning!" if !previous_station
+    if is_moving?
+      if previous_station
+        arrive_to previous_station
+      else
+        puts "It is the beginning!"
+      end
+    else
+      puts "At what speed?"
+    end
+  end
 
-    arrive_to self.previous_station
+  def go(direction)
+    if is_moving?
+      if next_station
+        arrive_to next_station
+      else
+        puts "It is the end!"
+      end
+    else
+      puts "At what speed?"
+    end
   end
 
   protected
