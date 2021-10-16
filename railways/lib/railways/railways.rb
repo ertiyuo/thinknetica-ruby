@@ -13,7 +13,7 @@ class Railways
   ACTIONS = {
     create_station: 'create station',
     print_stations: 'print stations',
-    print_trains: 'print trains on station',
+    print_station_trains: 'print trains on station',
 
     create_route: 'create route',
     add_station: 'add station to route',
@@ -36,17 +36,19 @@ class Railways
   end
 
   def create_station
-    puts 'create station'
-    # puts "Station name: "
-    # name = gets.chomp
-    # stations << Station.new(name)
+    print 'Station name: '
+    name = gets.chomp
+
+    stations << Station.new(name)
+
+    print "Station #{name} created. "
   end
 
   def print_stations
-    puts 'print stations'
+    stations.each_with_index { |station, id| puts "#{id} - #{station.name}" }
   end
 
-  def print_trains
+  def print_station_trains
     puts 'print station trains'
   end
 
@@ -89,4 +91,9 @@ class Railways
   private
 
   attr_writer :stations, :routes, :trains
+
+  def choose_station_by_input
+    print_stations
+    stations[gets.chomp.to_i]
+  end
 end
