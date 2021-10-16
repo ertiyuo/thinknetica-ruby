@@ -65,7 +65,14 @@ class Railways
   end
 
   def create_train
-    puts 'create train'
+    print 'Train type (cargo or passenger): '
+    type = gets.chomp
+    print 'Train number: '
+    number = gets.chomp
+
+    trains << Train.new(number, type)
+
+    print "New #{type} train ##{number} created. "
   end
 
   def add_carriage
