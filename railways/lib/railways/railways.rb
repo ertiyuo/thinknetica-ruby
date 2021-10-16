@@ -53,7 +53,15 @@ class Railways
   end
 
   def create_route
-    puts 'create route'
+    puts 'Enter departure station number: '
+    departure = choose_station_by_input
+
+    puts 'Enter arrival station number: '
+    arrival = choose_station_by_input
+
+    routes << Route.new(departure, arrival)
+
+    print "New route from #{departure.name} to #{arrival.name} created. "
   end
 
   def add_station
