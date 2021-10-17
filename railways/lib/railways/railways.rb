@@ -45,7 +45,7 @@ class Railways
   end
 
   def print_stations
-    stations.each_with_index { |station, id| puts "#{id} - #{station.name}" }
+    stations.each_with_index { |station, id| puts "#{id + 1} - #{station.name}" }
   end
 
   def print_station_trains
@@ -53,10 +53,10 @@ class Railways
   end
 
   def create_route
-    puts 'Enter departure station number: '
+    puts 'Choose departure station: '
     departure = choose_station_by_input
 
-    puts 'Enter arrival station number: '
+    puts 'Choose arrival station: '
     arrival = choose_station_by_input
 
     routes << Route.new(departure, arrival)
@@ -65,7 +65,15 @@ class Railways
   end
 
   def add_station
-    puts 'add station'
+    puts 'Choose route: '
+    route = choose_route_by_input
+
+    puts 'Choose station: '
+    station = choose_station_by_input
+
+    route.add_station station
+
+    print "Station #{station.name} added to route from #{route.first_station.name} to #{route.last_station.name}. "
   end
 
   def remove_station
@@ -108,7 +116,15 @@ class Railways
   attr_writer :stations, :routes, :trains
 
   def choose_station_by_input
-    print_stations
-    stations[gets.chomp.to_i]
+    choose_by_input(stations, &:name)
+  end
+
+  def choose_route_by_input
+    choose_by_input(routes) { |route| "from #{route.first_station.name} to #{route.last_station.name}" }
+  end
+
+  def choose_by_input(entities)
+    entities.each_with_index { |entity, id| puts "#{id + 1} - #{yield(entity)}" }
+    entities[gets.chomp.to_i - 1]
   end
 end
