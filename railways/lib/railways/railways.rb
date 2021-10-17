@@ -27,6 +27,8 @@ class Railways
     move_back: 'move train back'
   }.freeze
 
+  TRAIN_TYPES = %i[cargo passenger].freeze
+
   attr_reader :stations, :routes, :trains
 
   def initialize
@@ -89,12 +91,13 @@ class Railways
   end
 
   def create_train
-    print 'Train type (cargo or passenger): '
-    type = gets.chomp.to_sym
+    puts 'Choose train type: '
+    type = choose_train_type
+
     print 'Train number: '
     number = gets.chomp
 
-    trains << Train.new(number, type)
+    trains << create_train_by_type(type, number)
 
     print "New #{type} train ##{number} created. "
   end
@@ -149,6 +152,10 @@ class Railways
     choose_by_input(trains, &:number)
   end
 
+  def choose_train_type
+    choose_by_input(TRAIN_TYPES) { |type| type }
+  end
+
   def choose_route_station(route)
     choose_by_input(route.stations, &:name)
   end
@@ -156,5 +163,14 @@ class Railways
   def choose_by_input(entities)
     entities.each_with_index { |entity, id| puts "#{id + 1} - #{yield(entity)}" }
     entities[gets.chomp.to_i - 1]
+  end
+
+  def create_train_by_type(type, number)
+    case type
+    when :cargo then train = CargoTrain.new number
+    when :passenger then train = PassengerTrain.new number
+    end
+
+    train
   end
 end
