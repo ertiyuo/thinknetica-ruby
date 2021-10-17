@@ -54,10 +54,10 @@ class Railways
 
   def create_route
     puts 'Choose departure station: '
-    departure = choose_station_by_input
+    departure = choose_station
 
     puts 'Choose arrival station: '
-    arrival = choose_station_by_input
+    arrival = choose_station
 
     routes << Route.new(departure, arrival)
 
@@ -66,18 +66,26 @@ class Railways
 
   def add_station
     puts 'Choose route: '
-    route = choose_route_by_input
+    route = choose_route
 
     puts 'Choose station: '
-    station = choose_station_by_input
+    station = choose_station
 
     route.add_station station
 
-    print "Station #{station.name} added to route from #{route.first_station.name} to #{route.last_station.name}. "
+    print "Station #{station.name} added to route #{route.first_station.name} - #{route.last_station.name}. "
   end
 
   def remove_station
-    puts 'remove station'
+    puts 'Choose route: '
+    route = choose_route
+
+    puts 'Choose station: '
+    station = choose_route_station route
+
+    route.remove_station station
+
+    print "Station #{station.name} removed from route #{route.first_station.name} - #{route.last_station.name}. "
   end
 
   def create_train
@@ -115,12 +123,16 @@ class Railways
 
   attr_writer :stations, :routes, :trains
 
-  def choose_station_by_input
+  def choose_station
     choose_by_input(stations, &:name)
   end
 
-  def choose_route_by_input
+  def choose_route
     choose_by_input(routes) { |route| "from #{route.first_station.name} to #{route.last_station.name}" }
+  end
+
+  def choose_route_station(route)
+    choose_by_input(route.stations, &:name)
   end
 
   def choose_by_input(entities)
