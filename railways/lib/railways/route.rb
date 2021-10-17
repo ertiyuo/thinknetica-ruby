@@ -16,6 +16,7 @@ class Route
 
   # Может удалять промежуточную станцию из списка
   def remove_station(station)
+    station.trains.each { |_type, trains| trains.each { |train| station.departure_train train } }
     @stations.delete station
   end
 

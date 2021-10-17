@@ -22,5 +22,3 @@ loop do
     print 'Wrong command, try again: '
   end
 end
-
-puts "\nResult is #{railways.inspect}"

@@ -13,18 +13,18 @@ class Railways
   ACTIONS = {
     create_station: 'create station',
     print_stations: 'print stations',
-    print_station_trains: 'print trains on station',
+    print_station_trains: 'print trains',
 
     create_route: 'create route',
-    add_station: 'add station to route',
-    remove_station: 'remove station from route',
+    add_station: 'add station',
+    remove_station: 'remove station',
 
     create_train: 'create train',
-    add_carriage: 'add carriage to train',
-    remove_carriage: 'remove carriage from train',
-    set_route: 'set route for train',
-    move_forward: 'move train forward',
-    move_back: 'move train back'
+    add_carriage: 'add carriage',
+    remove_carriage: 'remove carriage',
+    set_route: 'set route',
+    move_forward: 'move forward',
+    move_back: 'move back'
   }.freeze
 
   TRAIN_TYPES = %i[cargo passenger].freeze
@@ -51,7 +51,20 @@ class Railways
   end
 
   def print_station_trains
-    puts 'print station trains'
+    station = choose_station
+
+    if station.trains.values.any?(&:any?)
+      puts 'Cargo trains: ' if station.trains[:cargo].any?
+      print_trains station.trains[:cargo]
+      puts 'Passenger trains: ' if station.trains[:passenger].any?
+      print_trains station.trains[:passenger]
+    else
+      puts 'No trains here.'
+    end
+  end
+
+  def print_trains(trains)
+    trains.each { |train| puts train.number }
   end
 
   def create_route
@@ -125,7 +138,7 @@ class Railways
   attr_writer :stations, :routes, :trains
 
   def choose_station
-    puts "Choose #{yield}station: "
+    puts "Choose #{block_given? ? yield : ''}station: "
     choose_by_input(stations, &:name)
   end
 
