@@ -20,8 +20,8 @@ class Train
   def add_carriage(carriage)
     return unless can_add_carriage? carriage
 
-    puts "Carriage added to #{type} train #{number}. Carriages count: #{carriages.count}"
     carriages << carriage
+    puts "Carriage added to #{type} train #{number}. Carriages count: #{carriages.count}"
   end
 
   def remove_carriage

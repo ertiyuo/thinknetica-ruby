@@ -55,47 +55,34 @@ class Railways
   end
 
   def create_route
-    puts 'Choose departure station: '
-    departure = choose_station
-
-    puts 'Choose arrival station: '
-    arrival = choose_station
-
+    departure = choose_departure_station
+    arrival = choose_arrival_station
     routes << Route.new(departure, arrival)
 
     print "New route from #{departure.name} to #{arrival.name} created. "
   end
 
   def add_station
-    puts 'Choose route: '
     route = choose_route
-
-    puts 'Choose station: '
     station = choose_station
-
     route.add_station station
 
     print "Station #{station.name} added to route #{route.first_station.name} - #{route.last_station.name}. "
   end
 
   def remove_station
-    puts 'Choose route: '
     route = choose_route
-
-    puts 'Choose station: '
     station = choose_route_station route
-
     route.remove_station station
 
     print "Station #{station.name} removed from route #{route.first_station.name} - #{route.last_station.name}. "
   end
 
   def create_train
-    puts 'Choose train type: '
-    type = choose_train_type
-
     print 'Train number: '
     number = gets.chomp
+
+    type = choose_train_type
 
     trains << create_train_by_type(type, number)
 
@@ -103,35 +90,32 @@ class Railways
   end
 
   def add_carriage
-    puts 'add carriage'
+    train = choose_train
+    carriage = create_carriage train
+    train.stop
+    train.add_carriage carriage
   end
 
   def remove_carriage
-    puts 'remove carriage'
+    train = choose_train
+    train.stop
+    train.remove_carriage
   end
 
   def set_route
-    puts 'Choose train: '
     train = choose_train
-
-    puts 'Choose route: '
     route = choose_route
-
     train.follow_route route
   end
 
   def move_forward
-    puts 'Choose train: '
     train = choose_train
-
     train.speed_up
     train.go_forward
   end
 
   def move_back
-    puts 'Choose train: '
     train = choose_train
-
     train.speed_up
     train.go_back
   end
@@ -141,23 +125,36 @@ class Railways
   attr_writer :stations, :routes, :trains
 
   def choose_station
+    puts "Choose #{yield}station: "
     choose_by_input(stations, &:name)
   end
 
+  def choose_departure_station
+    choose_station { 'departure ' }
+  end
+
+  def choose_arrival_station
+    choose_station { 'arrival ' }
+  end
+
   def choose_route
+    puts 'Choose route: '
     choose_by_input(routes) { |route| "from #{route.first_station.name} to #{route.last_station.name}" }
   end
 
-  def choose_train
-    choose_by_input(trains, &:number)
+  def choose_route_station(route)
+    puts 'Choose station: '
+    choose_by_input(route.stations, &:name)
   end
 
   def choose_train_type
+    puts 'Choose train type: '
     choose_by_input(TRAIN_TYPES) { |type| type }
   end
 
-  def choose_route_station(route)
-    choose_by_input(route.stations, &:name)
+  def choose_train
+    puts 'Choose train: '
+    choose_by_input(trains, &:number)
   end
 
   def choose_by_input(entities)
@@ -172,5 +169,13 @@ class Railways
     end
 
     train
+  end
+
+  def create_carriage(train)
+    case train.type
+    when :cargo then CargoCarriage.new
+    when :passenger then PassengerCarriage.new
+    else puts "Something is wrong with train ##{train.number} type"
+    end
   end
 end
