@@ -9,8 +9,8 @@ class Train
     @speed = 0
   end
 
-  def speed_up(diff)
-    @speed += diff
+  def speed_up
+    @speed = 100
   end
 
   def stop
@@ -38,39 +38,11 @@ class Train
   end
 
   def go_forward
-    if moving?
-      if next_station
-        arrive_to next_station
-      else
-        puts 'It is the end!'
-      end
-    else
-      puts 'At what speed?'
-    end
+    go
   end
 
   def go_back
-    if moving?
-      if previous_station
-        arrive_to previous_station
-      else
-        puts 'It is the beginning!'
-      end
-    else
-      puts 'At what speed?'
-    end
-  end
-
-  def go(_direction)
-    if moving?
-      if next_station
-        arrive_to next_station
-      else
-        puts 'It is the end!'
-      end
-    else
-      puts 'At what speed?'
-    end
+    go :back
   end
 
   protected
@@ -104,6 +76,7 @@ class Train
     !@speed.zero?
   end
 
+  # используется только объектом класса и потомками
   def can_add_carriage?(carriage)
     if carriage.type != type
       puts 'Wrong carriage!'
@@ -113,6 +86,7 @@ class Train
     can_change_carriages?
   end
 
+  # используется только объектом класса и потомками
   def can_change_carriages?
     if moving?
       puts 'Can not remove carriage while moving.'
@@ -120,5 +94,19 @@ class Train
     end
 
     true
+  end
+
+  # используется только объектом класса и потомками
+  def go(direction = :forward)
+    if moving?
+      station = direction == :forward ? next_station : previous_station
+      if station
+        arrive_to station
+      else
+        puts direction == :forward ? 'It is the end!' : 'It is the beginning!'
+      end
+    else
+      puts 'At what speed?'
+    end
   end
 end

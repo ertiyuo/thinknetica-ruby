@@ -90,7 +90,7 @@ class Railways
 
   def create_train
     print 'Train type (cargo or passenger): '
-    type = gets.chomp
+    type = gets.chomp.to_sym
     print 'Train number: '
     number = gets.chomp
 
@@ -118,11 +118,19 @@ class Railways
   end
 
   def move_forward
-    puts 'move train forward'
+    puts 'Choose train: '
+    train = choose_train
+
+    train.speed_up
+    train.go_forward
   end
 
   def move_back
-    puts 'move train back'
+    puts 'Choose train: '
+    train = choose_train
+
+    train.speed_up
+    train.go_back
   end
 
   private
