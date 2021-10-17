@@ -108,7 +108,13 @@ class Railways
   end
 
   def set_route
-    puts 'set train route'
+    puts 'Choose train: '
+    train = choose_train
+
+    puts 'Choose route: '
+    route = choose_route
+
+    train.follow_route route
   end
 
   def move_forward
@@ -129,6 +135,10 @@ class Railways
 
   def choose_route
     choose_by_input(routes) { |route| "from #{route.first_station.name} to #{route.last_station.name}" }
+  end
+
+  def choose_train
+    choose_by_input(trains, &:number)
   end
 
   def choose_route_station(route)

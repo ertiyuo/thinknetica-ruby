@@ -28,7 +28,7 @@ class Station
     when :passenger then @trains[:passenger] << train
     end
 
-    puts "Train #{train.number} arrived at #{name}"
+    puts "Train ##{train.number} arrived at #{name}. "
   end
 
   # Может отправлять поезда (по одному за раз - при этом поезд удаляется из списка поездов, находящихся на станции).

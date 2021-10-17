@@ -38,7 +38,7 @@ class Train
   end
 
   def go_forward
-    if is_moving?
+    if moving?
       if next_station
         arrive_to next_station
       else
@@ -50,7 +50,7 @@ class Train
   end
 
   def go_back
-    if is_moving?
+    if moving?
       if previous_station
         arrive_to previous_station
       else
@@ -62,7 +62,7 @@ class Train
   end
 
   def go(_direction)
-    if is_moving?
+    if moving?
       if next_station
         arrive_to next_station
       else
@@ -100,7 +100,7 @@ class Train
   end
 
   # используется только объектом класса и потомками
-  def is_moving?
+  def moving?
     !@speed.zero?
   end
 
@@ -114,8 +114,8 @@ class Train
   end
 
   def can_change_carriages?
-    if is_moving?
-      puts 'Can not remove carriage while moving'
+    if moving?
+      puts 'Can not remove carriage while moving.'
       return false
     end
 
