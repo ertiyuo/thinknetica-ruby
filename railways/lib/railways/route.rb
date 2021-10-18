@@ -10,14 +10,14 @@ class Route
 
   # Может добавлять промежуточную станцию в список
   def add_station(station)
-    last_station = @stations.pop
+    last_station = stations.pop
     @stations << station << last_station
   end
 
   # Может удалять промежуточную станцию из списка
   def remove_station(station)
     station.trains.each { |_type, trains| trains.each { |train| station.departure_train train } }
-    @stations.delete station
+    stations.delete station
   end
 
   # Может выводить список всех станций по порядку от начальной до конечной

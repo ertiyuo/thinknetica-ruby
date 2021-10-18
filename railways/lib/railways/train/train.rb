@@ -34,7 +34,8 @@ class Train
   def follow_route(route)
     @route = route
     @current_station = route.stations[0]
-    @current_station.arrive_train self
+
+    current_station.arrive_train self
   end
 
   def go_forward
@@ -66,9 +67,10 @@ class Train
 
   # используется только объектом класса и потомками
   def arrive_to(station)
-    @current_station.departure_train self
+    current_station.departure_train self
+    station.arrive_train self
+
     @current_station = station
-    @current_station.arrive_train self
   end
 
   # используется только объектом класса и потомками
