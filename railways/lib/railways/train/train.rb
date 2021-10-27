@@ -1,4 +1,6 @@
 class Train
+  include Vendor
+
   attr_reader :number, :type, :carriages, :current_station
 
   def initialize(number, type)
