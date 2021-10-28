@@ -9,6 +9,8 @@ class Station
       cargo: [],
       passenger: []
     }
+
+    self.class.stations << self
   end
 
   # Может возвращать список поездов на станции по типу (см. ниже): кол-во грузовых
@@ -34,5 +36,13 @@ class Station
   # Может отправлять поезда (по одному за раз - при этом поезд удаляется из списка поездов, находящихся на станции).
   def departure_train(train)
     trains[train.type].delete train
+  end
+
+  def self.stations
+    @stations ||= []
+  end
+
+  def self.all
+    @stations
   end
 end
