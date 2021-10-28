@@ -9,6 +9,8 @@ class Train
 
     @carriages = []
     @speed = 0
+
+    self.class.trains << self
   end
 
   def speed_up
@@ -46,6 +48,14 @@ class Train
 
   def go_back
     go :back
+  end
+
+  def self.trains
+    @@trains ||= []
+  end
+
+  def self.find(train_number)
+    trains.find { |train| train.number == train_number }
   end
 
   protected
