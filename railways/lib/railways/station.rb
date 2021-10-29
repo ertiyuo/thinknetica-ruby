@@ -1,5 +1,7 @@
 # Класс Station (Станция)
 class Station
+  include InstanceCounter
+
   attr_reader :trains, :name
 
   # Имеет название, которое указывается при ее создании
@@ -9,6 +11,8 @@ class Station
       cargo: [],
       passenger: []
     }
+
+    register_instance
 
     self.class.stations << self
   end

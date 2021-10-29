@@ -1,5 +1,6 @@
 class Train
   include Vendor
+  include InstanceCounter
 
   attr_reader :number, :type, :carriages, :current_station
 
@@ -9,6 +10,8 @@ class Train
 
     @carriages = []
     @speed = 0
+
+    register_instance
 
     self.class.trains << self
   end
