@@ -1,4 +1,7 @@
 class Train
+  include Vendor
+  include InstanceCounter
+
   attr_reader :number, :type, :carriages, :current_station
 
   def initialize(number, type)
@@ -7,6 +10,10 @@ class Train
 
     @carriages = []
     @speed = 0
+
+    register_instance
+
+    self.class.trains << self
   end
 
   def speed_up
@@ -44,6 +51,14 @@ class Train
 
   def go_back
     go :back
+  end
+
+  def self.trains
+    @@trains ||= []
+  end
+
+  def self.find(train_number)
+    trains.find { |train| train.number == train_number }
   end
 
   protected
