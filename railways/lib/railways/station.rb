@@ -7,6 +7,8 @@ class Station
   # Имеет название, которое указывается при ее создании
   def initialize(name)
     @name = name
+    validate!
+
     @trains = {
       cargo: [],
       passenger: []
@@ -48,5 +50,18 @@ class Station
 
   def self.all
     @stations
+  end
+
+  def valid?
+    validate!
+    true
+  rescue RuntimeError
+    false
+  end
+
+  protected
+
+  def validate!
+    raise 'Name should not be empty' if name == ''
   end
 end

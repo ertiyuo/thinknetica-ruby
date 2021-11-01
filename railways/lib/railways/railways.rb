@@ -27,8 +27,6 @@ class Railways
     move_back: 'move back'
   }.freeze
 
-  TRAIN_TYPES = %i[cargo passenger].freeze
-
   attr_reader :stations, :routes, :trains
 
   def initialize
@@ -162,7 +160,7 @@ class Railways
 
   def choose_train_type
     puts 'Choose train type: '
-    choose_by_input(TRAIN_TYPES) { |type| type }
+    choose_by_input(Vendor::TYPES) { |type| type }
   end
 
   def choose_train

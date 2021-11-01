@@ -7,6 +7,7 @@ class Train
   def initialize(number, type)
     @number = number
     @type = type
+    validate!
 
     @carriages = []
     @speed = 0
@@ -61,7 +62,19 @@ class Train
     trains.find { |train| train.number == train_number }
   end
 
+  def valid?
+    validate!
+    true
+  rescue RuntimeError
+    false
+  end
+
   protected
+
+  def validate!
+    raise 'Number should not be empty' if number == ''
+    raise 'Wrong train type' unless TYPES.include? type
+  end
 
   # используется только объектом класса и потомками
   attr_reader :route
