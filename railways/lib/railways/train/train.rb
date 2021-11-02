@@ -71,7 +71,7 @@ class Train
 
   def validate!
     raise 'Number should not be empty' if number == ''
-    raise 'Wrong number format' unless number =~ /[a-z\d]{3}-?[a-z\d]{2}/i
+    raise 'Wrong number format' unless number =~ /^[a-z\d]{3}-?[a-z\d]{2}$/i
     raise 'Wrong train type' unless TYPES.include? type
   end
 
