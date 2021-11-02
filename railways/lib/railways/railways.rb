@@ -96,6 +96,10 @@ class Railways
     trains << create_train_by_type(type, number)
 
     print "New #{type} train ##{number} created. "
+  rescue RuntimeError => e
+    print "#{e}, try again\n"
+
+    retry
   end
 
   def add_carriage
