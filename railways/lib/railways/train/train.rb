@@ -29,14 +29,12 @@ class Train
     return unless can_add_carriage? carriage
 
     carriages << carriage
-    puts "Carriage added to #{type} train #{number}. Carriages count: #{carriages.count}"
   end
 
   def remove_carriage
     return unless can_change_carriages?
 
     carriages.pop
-    puts "Carriage removed from train #{number}. Carriages count: #{carriages.count}"
   end
 
   def follow_route(route)
@@ -109,35 +107,23 @@ class Train
 
   # используется только объектом класса и потомками
   def can_add_carriage?(carriage)
-    if carriage.type != type
-      puts 'Wrong carriage!'
-      return false
-    end
+    raise 'Wrong carriage!' unless carriage.type == type
 
     can_change_carriages?
   end
 
   # используется только объектом класса и потомками
   def can_change_carriages?
-    if moving?
-      puts 'Can not remove carriage while moving.'
-      return false
-    end
-
-    true
+    moving?
   end
 
   # используется только объектом класса и потомками
   def go(direction = :forward)
-    if moving?
-      station = direction == :forward ? next_station : previous_station
-      if station
-        arrive_to station
-      else
-        puts direction == :forward ? 'It is the end!' : 'It is the beginning!'
-      end
-    else
-      puts 'At what speed?'
-    end
+    raise 'At what speed?' unless moving?
+
+    station = direction == :forward ? next_station : previous_station
+    raise direction == :forward ? 'It is the end!' : 'It is the beginning!' unless station
+
+    arrive_to station
   end
 end

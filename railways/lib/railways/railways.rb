@@ -50,15 +50,13 @@ class Railways
 
   def print_station_trains
     station = choose_station
+    puts 'No trains here.' unless station.trains.values.any?(&:any?)
 
-    if station.trains.values.any?(&:any?)
-      puts 'Cargo trains: ' if station.trains[:cargo].any?
-      print_trains station.trains[:cargo]
-      puts 'Passenger trains: ' if station.trains[:passenger].any?
-      print_trains station.trains[:passenger]
-    else
-      puts 'No trains here.'
-    end
+    puts 'Cargo trains: ' if station.trains[:cargo].any?
+    print_trains station.trains[:cargo]
+
+    puts 'Passenger trains: ' if station.trains[:passenger].any?
+    print_trains station.trains[:passenger]
   end
 
   def print_trains(trains)
