@@ -52,6 +52,12 @@ class Train
     go :back
   end
 
+  def each_carriage(&block)
+    carriages.each do |carriage|
+      block.call carriage
+    end
+  end
+
   def self.trains
     @@trains ||= []
   end
@@ -118,7 +124,7 @@ class Train
 
   # используется только объектом класса и потомками
   def can_change_carriages?
-    moving?
+    !moving?
   end
 
   # используется только объектом класса и потомками
