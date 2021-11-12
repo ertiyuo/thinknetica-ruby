@@ -22,6 +22,7 @@ class Railways
     create_train: 'create train',
     add_carriage: 'add carriage',
     remove_carriage: 'remove carriage',
+    print_carriages: 'print carriages',
 
     set_route: 'set route',
     move_forward: 'move forward',
@@ -112,6 +113,14 @@ class Railways
     train = choose_train
     train.stop
     train.remove_carriage
+  end
+
+  def print_carriages
+    train = choose_train
+
+    train.each_carriage do |carriage|
+      puts "#{carriage.type} carriage ##{carriage.number} (free - #{carriage.free}, occupied - #{carriage.occupied})"
+    end
   end
 
   def set_route
