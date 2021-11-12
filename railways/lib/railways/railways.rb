@@ -22,6 +22,7 @@ class Railways
     create_train: 'create train',
     add_carriage: 'add carriage',
     remove_carriage: 'remove carriage',
+
     set_route: 'set route',
     move_forward: 'move forward',
     move_back: 'move back'
@@ -50,13 +51,11 @@ class Railways
 
   def print_station_trains
     station = choose_station
-    puts 'No trains here.' unless station.trains.values.any?(&:any?)
+    puts 'No trains here.' unless station.trains.any?
 
-    puts 'Cargo trains: ' if station.trains[:cargo].any?
-    print_trains station.trains[:cargo]
-
-    puts 'Passenger trains: ' if station.trains[:passenger].any?
-    print_trains station.trains[:passenger]
+    station.each_train do |train|
+      puts "#{train.type} train ##{train.number} with #{train.carriages.count} carriages"
+    end
   end
 
   def print_trains(trains)

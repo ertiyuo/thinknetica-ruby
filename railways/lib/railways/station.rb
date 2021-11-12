@@ -16,12 +16,12 @@ class Station
 
   # Может возвращать список поездов на станции по типу (см. ниже): кол-во грузовых
   def cargo_trains
-    trains.filter{ |train| train.type == :cargo }
+    trains.filter { |train| train.type == :cargo }
   end
 
   # Может возвращать список поездов на станции по типу (см. ниже): кол-во пассажирских
   def passenger_trains
-    trains.filter{ |train| train.type == :passenger }
+    trains.filter { |train| train.type == :passenger }
   end
 
   # Может принимать поезда (по одному за раз)
@@ -31,7 +31,7 @@ class Station
 
   # Может отправлять поезда (по одному за раз - при этом поезд удаляется из списка поездов, находящихся на станции).
   def departure_train(train)
-    trains[train.type].delete train
+    trains.delete train
   end
 
   def each_train(&block)
