@@ -8,6 +8,10 @@ class Carriage
     validate!
   end
 
+  def number
+    rand(1..20)
+  end
+
   def valid?
     validate!
     true

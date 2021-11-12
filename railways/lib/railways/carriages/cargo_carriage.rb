@@ -1,22 +1,22 @@
 require_relative 'carriage'
 
 class CargoCarriage < Carriage
-  attr_reader :occupied_space
+  attr_reader :occupied
 
   def initialize(space)
     @space = space
-    @occupied_space = 0
+    @occupied = 0
 
     super(:cargo)
   end
 
   def take_space(amount)
-    raise 'No more space!' if free_space.zero?
+    raise 'No more space!' if free.zero?
 
-    @occupied_space += amount
+    @occupied += amount
   end
 
-  def free_space
-    @space - occupied_space
+  def free
+    @space - occupied
   end
 end

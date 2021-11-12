@@ -185,9 +185,12 @@ class Railways
   end
 
   def create_carriage(train)
+    puts train.type == :cargo ? 'Enter total space: ' : 'Enter number of seats: '
+    amount = gets.to_i
+
     case train.type
-    when :cargo then CargoCarriage.new
-    when :passenger then PassengerCarriage.new
+    when :cargo then CargoCarriage.new amount
+    when :passenger then PassengerCarriage.new amount
     else puts "Something is wrong with train ##{train.number} type"
     end
   end
