@@ -1,15 +1,13 @@
 class Carriage
   include Vendor
 
-  attr_reader :type
+  attr_reader :type, :number
 
   def initialize(type)
+    @number = rand(1..20)
     @type = type
-    validate!
-  end
 
-  def number
-    rand(1..20)
+    validate!
   end
 
   def valid?

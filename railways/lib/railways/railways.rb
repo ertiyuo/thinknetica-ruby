@@ -20,13 +20,14 @@ class Railways
     remove_station: 'remove station',
 
     create_train: 'create train',
-    add_carriage: 'add carriage',
-    remove_carriage: 'remove carriage',
-    print_carriages: 'print carriages',
-
     set_route: 'set route',
     move_forward: 'move forward',
-    move_back: 'move back'
+    move_back: 'move back',
+
+    add_carriage: 'add carriage',
+    take_space: 'take space',
+    remove_carriage: 'remove carriage',
+    print_carriages: 'print carriages'
   }.freeze
 
   attr_reader :stations, :routes, :trains
@@ -109,6 +110,18 @@ class Railways
     train.add_carriage carriage
   end
 
+  def take_space
+    train = choose_train
+    carriage = choose_carriage train
+    return carriage.take_seat if carriage.type == :passenger
+
+    print 'How much space? '
+    space = gets.to_i
+    carriage.take_space space
+  rescue RuntimeError => e
+    puts e
+  end
+
   def remove_carriage
     train = choose_train
     train.stop
@@ -176,6 +189,11 @@ class Railways
   def choose_train
     puts 'Choose train: '
     choose_by_input(trains, &:number)
+  end
+
+  def choose_carriage(train)
+    puts 'Choose carriage: '
+    choose_by_input(train.carriages, &:number)
   end
 
   def choose_by_input(entities)
