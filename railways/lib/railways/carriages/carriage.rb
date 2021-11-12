@@ -5,5 +5,19 @@ class Carriage
 
   def initialize(type)
     @type = type
+    validate!
+  end
+
+  def valid?
+    validate!
+    true
+  rescue RuntimeError
+    false
+  end
+
+  protected
+
+  def validate!
+    raise 'Wrong train type' unless TYPES.include? type
   end
 end

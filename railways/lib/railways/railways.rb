@@ -27,8 +27,6 @@ class Railways
     move_back: 'move back'
   }.freeze
 
-  TRAIN_TYPES = %i[cargo passenger].freeze
-
   attr_reader :stations, :routes, :trains
 
   def initialize
@@ -52,15 +50,13 @@ class Railways
 
   def print_station_trains
     station = choose_station
+    puts 'No trains here.' unless station.trains.values.any?(&:any?)
 
-    if station.trains.values.any?(&:any?)
-      puts 'Cargo trains: ' if station.trains[:cargo].any?
-      print_trains station.trains[:cargo]
-      puts 'Passenger trains: ' if station.trains[:passenger].any?
-      print_trains station.trains[:passenger]
-    else
-      puts 'No trains here.'
-    end
+    puts 'Cargo trains: ' if station.trains[:cargo].any?
+    print_trains station.trains[:cargo]
+
+    puts 'Passenger trains: ' if station.trains[:passenger].any?
+    print_trains station.trains[:passenger]
   end
 
   def print_trains(trains)
@@ -100,6 +96,10 @@ class Railways
     trains << create_train_by_type(type, number)
 
     print "New #{type} train ##{number} created. "
+  rescue RuntimeError => e
+    print "#{e}, try again\n"
+
+    retry
   end
 
   def add_carriage
@@ -162,7 +162,7 @@ class Railways
 
   def choose_train_type
     puts 'Choose train type: '
-    choose_by_input(TRAIN_TYPES) { |type| type }
+    choose_by_input(Vendor::TYPES) { |type| type }
   end
 
   def choose_train

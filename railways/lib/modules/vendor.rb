@@ -1,9 +1,5 @@
 module Vendor
-  def self.included(base)
-    base.include InstanceMethods
-  end
+  TYPES = %i[cargo passenger].freeze
 
-  module InstanceMethods
-    attr_accessor :vendor_name
-  end
+  attr_accessor :vendor_name
 end

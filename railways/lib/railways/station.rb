@@ -7,6 +7,8 @@ class Station
   # Имеет название, которое указывается при ее создании
   def initialize(name)
     @name = name
+    validate!
+
     @trains = {
       cargo: [],
       passenger: []
@@ -33,8 +35,6 @@ class Station
     when :cargo then trains[:cargo] << train
     when :passenger then trains[:passenger] << train
     end
-
-    puts "Train ##{train.number} arrived at #{name}. "
   end
 
   # Может отправлять поезда (по одному за раз - при этом поезд удаляется из списка поездов, находящихся на станции).
@@ -48,5 +48,18 @@ class Station
 
   def self.all
     @stations
+  end
+
+  def valid?
+    validate!
+    true
+  rescue RuntimeError
+    false
+  end
+
+  protected
+
+  def validate!
+    raise 'Name should not be empty' if name == ''
   end
 end

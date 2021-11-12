@@ -8,6 +8,7 @@ class Route
   # Начальная и конечная станции указываются при создании маршрута, а промежуточные могут добавляться между ними.
   def initialize(first_station, last_station)
     @stations = [first_station, last_station]
+    validate!
 
     register_instance
   end
@@ -35,5 +36,20 @@ class Route
 
   def last_station
     stations.last
+  end
+
+  def valid?
+    validate!
+    true
+  rescue RuntimeError
+    false
+  end
+
+  protected
+
+  def validate!
+    raise 'Last station should be specified' if stations.length < 2
+    raise 'Stations should be specified' if stations.empty?
+    raise 'Stations should be objects of Station' if first_station.class != Station || last_station.class != Station
   end
 end
