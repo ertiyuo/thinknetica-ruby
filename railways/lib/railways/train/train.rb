@@ -70,9 +70,13 @@ class Train
   protected
 
   def validate!
-    raise 'Number should not be empty' if number == ''
-    raise 'Wrong number format' unless number =~ /^[a-z\d]{3}-?[a-z\d]{2}$/i
-    raise 'Wrong train type' unless TYPES.include? type
+    errors = []
+
+    errors << 'Number should not be empty' if number == ''
+    errors << 'Wrong number format' unless number =~ /^[a-z\d]{3}-?[a-z\d]{2}$/i
+    errors << 'Wrong train type' unless TYPES.include? type
+
+    raise errors.join('\n') unless errors.empty?
   end
 
   # используется только объектом класса и потомками
