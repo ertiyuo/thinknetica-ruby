@@ -53,9 +53,7 @@ class Train
   end
 
   def each_carriage(&block)
-    carriages.each do |carriage|
-      block.call carriage
-    end
+    carriages.each(&block)
   end
 
   def self.trains

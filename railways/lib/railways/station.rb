@@ -35,9 +35,7 @@ class Station
   end
 
   def each_train(&block)
-    trains.each do |train|
-      block.call train
-    end
+    trains.each(&block)
   end
 
   def self.stations
