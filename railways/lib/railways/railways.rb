@@ -20,11 +20,14 @@ class Railways
     remove_station: 'remove station',
 
     create_train: 'create train',
-    add_carriage: 'add carriage',
-    remove_carriage: 'remove carriage',
     set_route: 'set route',
     move_forward: 'move forward',
-    move_back: 'move back'
+    move_back: 'move back',
+
+    add_carriage: 'add carriage',
+    take_space: 'take space',
+    remove_carriage: 'remove carriage',
+    print_carriages: 'print carriages'
   }.freeze
 
   attr_reader :stations, :routes, :trains
@@ -50,13 +53,11 @@ class Railways
 
   def print_station_trains
     station = choose_station
-    puts 'No trains here.' unless station.trains.values.any?(&:any?)
+    puts 'No trains here.' unless station.trains.any?
 
-    puts 'Cargo trains: ' if station.trains[:cargo].any?
-    print_trains station.trains[:cargo]
-
-    puts 'Passenger trains: ' if station.trains[:passenger].any?
-    print_trains station.trains[:passenger]
+    station.each_train do |train|
+      puts "#{train.type} train ##{train.number} with #{train.carriages.count} carriages"
+    end
   end
 
   def print_trains(trains)
@@ -109,10 +110,30 @@ class Railways
     train.add_carriage carriage
   end
 
+  def take_space
+    train = choose_train
+    carriage = choose_carriage train
+    return carriage.take_seat if carriage.type == :passenger
+
+    print 'How much space? '
+    space = gets.to_i
+    carriage.take_space space
+  rescue RuntimeError => e
+    puts e
+  end
+
   def remove_carriage
     train = choose_train
     train.stop
     train.remove_carriage
+  end
+
+  def print_carriages
+    train = choose_train
+
+    train.each_carriage do |carriage|
+      puts "#{carriage.type} carriage ##{carriage.number} (free - #{carriage.free}, occupied - #{carriage.occupied})"
+    end
   end
 
   def set_route
@@ -170,6 +191,11 @@ class Railways
     choose_by_input(trains, &:number)
   end
 
+  def choose_carriage(train)
+    puts 'Choose carriage: '
+    choose_by_input(train.carriages, &:number)
+  end
+
   def choose_by_input(entities)
     entities.each_with_index { |entity, id| puts "#{id + 1} - #{yield(entity)}" }
     entities[gets.chomp.to_i - 1]
@@ -185,9 +211,12 @@ class Railways
   end
 
   def create_carriage(train)
+    puts train.type == :cargo ? 'Enter total space: ' : 'Enter number of seats: '
+    amount = gets.to_i
+
     case train.type
-    when :cargo then CargoCarriage.new
-    when :passenger then PassengerCarriage.new
+    when :cargo then CargoCarriage.new amount
+    when :passenger then PassengerCarriage.new amount
     else puts "Something is wrong with train ##{train.number} type"
     end
   end

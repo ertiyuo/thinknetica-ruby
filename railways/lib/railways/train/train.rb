@@ -52,6 +52,10 @@ class Train
     go :back
   end
 
+  def each_carriage(&block)
+    carriages.each(&block)
+  end
+
   def self.trains
     @@trains ||= []
   end
@@ -70,9 +74,13 @@ class Train
   protected
 
   def validate!
-    raise 'Number should not be empty' if number == ''
-    raise 'Wrong number format' unless number =~ /^[a-z\d]{3}-?[a-z\d]{2}$/i
-    raise 'Wrong train type' unless TYPES.include? type
+    errors = []
+
+    errors << 'Number should not be empty' if number == ''
+    errors << 'Wrong number format' unless number =~ /^[a-z\d]{3}-?[a-z\d]{2}$/i
+    errors << 'Wrong train type' unless TYPES.include? type
+
+    raise errors.join('\n') unless errors.empty?
   end
 
   # используется только объектом класса и потомками
@@ -114,7 +122,7 @@ class Train
 
   # используется только объектом класса и потомками
   def can_change_carriages?
-    moving?
+    !moving?
   end
 
   # используется только объектом класса и потомками
