@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Класс Station (Станция)
 class Station
   include InstanceCounter

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Класс Route (Маршрут):
 class Route
   include InstanceCounter
@@ -16,7 +18,7 @@ class Route
   # Может добавлять промежуточную станцию в список
   def add_station(station)
     last_station = stations.pop
-    @stations << station << last_station
+    stations << station << last_station
   end
 
   # Может удалять промежуточную станцию из списка
@@ -48,8 +50,12 @@ class Route
   protected
 
   def validate!
-    raise 'Last station should be specified' if stations.length < 2
-    raise 'Stations should be specified' if stations.empty?
-    raise 'Stations should be objects of Station' if first_station.class != Station || last_station.class != Station
+    errors = []
+
+    errors << 'Last station should be specified' if stations.length < 2
+    errors << 'Stations should be specified' if stations.empty?
+    errors << 'Stations should be objects of Station' if first_station.class != Station || last_station.class != Station
+
+    raise errors.join('\n') unless errors.empty?
   end
 end
