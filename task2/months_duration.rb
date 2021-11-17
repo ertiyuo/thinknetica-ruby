@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 MONTHS = {
   january: 31,
   february: 28,
@@ -11,4 +13,4 @@ MONTHS = {
   october: 31,
   november: 30,
   december: 31
-}
+}.freeze

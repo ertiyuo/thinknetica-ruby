@@ -173,7 +173,9 @@ class Railways
 
   def choose_route
     puts 'Choose route: '
-    choose_by_input(routes) { |route| "from #{route.first_station.name} to #{route.last_station.name}" }
+    choose_by_input(routes) do |route|
+      "from #{route.first_station.name} to #{route.last_station.name}"
+    end
   end
 
   def choose_route_station(route)
