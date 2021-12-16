@@ -3,8 +3,10 @@
 class Train
   include Vendor
   include InstanceCounter
+  include Accessors
 
-  attr_reader :number, :type, :carriages, :current_station
+  attr_accessor_with_history :number, :type, :carriages
+  strong_attr_accessor :current_station, Station
 
   def initialize(number, type)
     @number = number
