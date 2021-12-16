@@ -2,8 +2,13 @@
 
 class Carriage
   include Vendor
+  include Validation
 
-  attr_reader :type, :number, :occupied
+  extend Accessors
+
+  attr_accessor_with_history :number, :type, :occupied
+
+  validate :type, :format, /^cargo$|^passenger$/i
 
   def initialize(type, space)
     @number = rand(1..20)
@@ -18,23 +23,10 @@ class Carriage
   def take_space(amount)
     raise 'No more space!' if free.zero?
 
-    @occupied += amount
+    self.occupied += amount
   end
 
   def free
     @space - occupied
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
-  end
-
-  protected
-
-  def validate!
-    raise 'Wrong train type' unless TYPES.include? type
   end
 end
