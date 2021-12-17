@@ -3,8 +3,15 @@
 # Класс Station (Станция)
 class Station
   include InstanceCounter
+  include Validation
 
-  attr_reader :trains, :name
+  extend Accessors
+
+  attr_reader :trains
+
+  attr_accessor_with_history :name
+
+  validate :name, :presence
 
   # Имеет название, которое указывается при ее создании
   def initialize(name)
@@ -46,18 +53,5 @@ class Station
 
   def self.all
     @stations
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
-  end
-
-  protected
-
-  def validate!
-    raise 'Name should not be empty' if name == ''
   end
 end

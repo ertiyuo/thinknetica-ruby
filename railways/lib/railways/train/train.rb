@@ -1,10 +1,25 @@
 # frozen_string_literal: true
 
+require_relative '../station'
+require_relative '../route'
+
 class Train
   include Vendor
   include InstanceCounter
+  include Validation
 
-  attr_reader :number, :type, :carriages, :current_station
+  extend Accessors
+
+  attr_reader :carriages
+
+  attr_accessor_with_history :number, :type
+
+  strong_attr_accessor :route, Route
+  strong_attr_accessor :current_station, Station
+
+  validate :number, :presence
+  validate :number, :format, /^[a-z\d]{3}-?[a-z\d]{2}$/i
+  validate :type, :format, /^cargo$|^passenger$/i
 
   def initialize(number, type)
     @number = number
@@ -39,9 +54,9 @@ class Train
     carriages.pop
   end
 
-  def follow_route(route)
-    @route = route
-    @current_station = route.stations[0]
+  def follow_route(new_route)
+    self.route = new_route
+    self.current_station = route.stations[0]
 
     current_station.arrive_train self
   end
@@ -66,27 +81,7 @@ class Train
     trains.find { |train| train.number == train_number }
   end
 
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
-  end
-
   protected
-
-  def validate!
-    errors = []
-
-    errors << 'Number should not be empty' if number == ''
-    errors << 'Wrong number format' unless number =~ /^[a-z\d]{3}-?[a-z\d]{2}$/i
-    errors << 'Wrong train type' unless TYPES.include? type
-
-    raise errors.join('\n') unless errors.empty?
-  end
-
-  # используется только объектом класса и потомками
-  attr_reader :route
 
   # используется только объектом класса и потомками
   def previous_station
